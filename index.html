@@ -9,10 +9,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fuentes: Inter para todo (Más limpio/Corporativo) y JetBrains para código puntual -->
+    <!-- Fuentes: Inter, JetBrains y Press Start 2P (Game) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap" rel="stylesheet">
     
     <!-- Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -25,23 +25,23 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                        game: ['"Press Start 2P"', 'cursive'],
                     },
                     colors: {
                         slate: {
-                            850: '#1e293b', // Fondo tarjetas
-                            900: '#0f172a', // Fondo principal (Navy Dark)
-                            950: '#020617', // Acentos oscuros
+                            850: '#1e293b', 
+                            900: '#0f172a', 
+                            950: '#020617', 
                         },
                         brand: {
-                            primary: '#38bdf8', // Sky Blue 400 (Más suave que el Cian Neón)
-                            secondary: '#818cf8', // Indigo 400
-                            text: '#f1f5f9',      // Slate 100
-                            muted: '#94a3b8'      // Slate 400
+                            primary: '#38bdf8', 
+                            secondary: '#818cf8', 
+                            text: '#f1f5f9',      
+                            muted: '#94a3b8'      
                         }
                     },
-                    boxShadow: {
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
-                        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -59,12 +59,11 @@
             background-attachment: fixed;
         }
         
-        /* Glassmorphism: El estándar "Premium" que gusta a todos */
         .glass-panel {
-            background: rgba(30, 41, 59, 0.4); /* Más transparente */
+            background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil blanco */
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
@@ -73,31 +72,116 @@
             background: rgba(30, 41, 59, 0.6);
         }
 
-        /* Tipografía limpia */
         .text-gradient {
             background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Scrollbar discreto */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-        /* Animaciones suaves */
         .modal { opacity: 0; visibility: hidden; transition: all 0.2s ease-in-out; }
         .modal.active { opacity: 1; visibility: visible; }
         .modal-content { transform: scale(0.98); transition: all 0.2s ease-in-out; }
         .modal.active .modal-content { transform: scale(1); }
+
+        /* === SPARTAN GAME STYLES START === */
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 30px rgba(50, 150, 255, 0.15);
+            border: 1px solid #334155;
+            background-color: #000;
+        }
+
+        canvas#gameCanvas {
+            background: linear-gradient(to bottom, #1a0b2e, #4a69bd);
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated; /* CRUCIAL: Mantiene los píxeles nítidos */
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            pointer-events: none;
+            text-shadow: 2px 2px 0 #000;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            z-index: 20;
+        }
+
+        .bar-container {
+            margin-bottom: 5px;
+            border: 2px solid #000;
+            background: #333;
+            padding: 2px;
+            width: 150px;
+        }
+
+        #hp-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #555;
+        }
+
+        #hp-fill {
+            width: 100%;
+            height: 100%;
+            background-color: #3498db;
+            transition: width 0.1s linear;
+        }
+
+        #ammo-display, #score-display { 
+            font-size: 10px; 
+            margin-top: 5px; 
+        }
+        
+        #ammo-display { color: #f1c40f; }
+
+        #reload-msg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 14px; color: #e74c3c; display: none;
+            animation: blink 0.5s infinite; text-shadow: 2px 2px 0 #000; white-space: nowrap;
+            font-family: 'Press Start 2P', cursive;
+            z-index: 20;
+        }
+
+        #game-over-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; z-index: 30;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #game-btn {
+            background: #3498db; border: 2px solid #2980b9; color: white;
+            padding: 10px 20px; font-family: 'Press Start 2P', cursive; font-size: 10px;
+            cursor: pointer; margin-top: 15px; text-transform: uppercase;
+        }
+        #game-btn:hover { background: #2980b9; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        
+        #controls-hint {
+            position: absolute; bottom: 5px; left: 5px; right: 5px; font-size: 8px;
+            color: rgba(255,255,255,0.7); text-align: center; line-height: 1.5;
+            font-family: 'Press Start 2P', cursive;
+            pointer-events: none;
+        }
+        /* === SPARTAN GAME STYLES END === */
     </style>
 </head>
 <body class="antialiased selection:bg-brand-primary selection:text-slate-900">
 
-    <!-- Navbar: Minimalista -->
+    <!-- Navbar -->
     <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
-        <div class="glass-panel border-b-0"> <!-- Sin borde inferior duro -->
+        <div class="glass-panel border-b-0">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex-shrink-0 font-sans text-lg font-semibold tracking-tight">
@@ -118,11 +202,12 @@
         </div>
     </nav>
 
-    <!-- Hero Section: Limpio y Espacioso -->
-    <section id="about" class="relative min-h-screen flex items-center justify-center pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <!-- Hero Section -->
+    <section id="about" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
             
-            <div class="space-y-8">
+            <!-- Texto (Izquierda) -->
+            <div class="space-y-8 order-2 lg:order-1">
                 <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-primary/20 bg-brand-primary/10">
                     <span class="flex h-2 w-2 relative mr-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
@@ -153,47 +238,61 @@
                 </div>
             </div>
 
-            <!-- Terminal Visual: Estilo MacOS (Más amigable) -->
-            <div class="hidden lg:block relative group perspective">
-                <div class="glass-panel rounded-xl shadow-2xl overflow-hidden transform transition-transform duration-500 group-hover:rotate-1">
+            <!-- Juego (Derecha - Reemplazando Terminal) -->
+            <div class="relative order-1 lg:order-2 flex flex-col items-center">
+                <div class="glass-panel rounded-xl shadow-2xl overflow-hidden w-full max-w-2xl mx-auto transform transition-transform hover:scale-[1.01] duration-300 border-none bg-black">
                     <!-- Barra de título estilo ventana -->
-                    <div class="bg-slate-800/50 px-4 py-3 flex items-center justify-between border-b border-white/5">
+                    <div class="bg-slate-800/90 px-4 py-2 flex items-center justify-between border-b border-white/10 backdrop-blur-md">
                         <div class="flex space-x-2">
                             <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
                             <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
                         </div>
-                        <div class="text-xs font-medium text-slate-400">~/jupiterone/integrations</div>
-                        <div class="w-8"></div> <!-- Spacer -->
+                        <div class="text-[10px] font-game text-slate-400 flex items-center gap-2">
+                            <i data-lucide="gamepad-2" class="w-3 h-3"></i> SPARTAN_PROTOCOL.exe
+                        </div>
+                        <div class="w-8"></div> 
                     </div>
                     
-                    <div class="p-6 font-mono text-sm space-y-4 bg-slate-900/40">
-                        <div class="flex items-center text-slate-400">
-                            <span class="text-brand-primary mr-2">➜</span>
-                            <span>cat professional_profile.json</span>
+                    <!-- === SPARTAN GAME HTML STRUCTURE START === -->
+                    <div id="game-container">
+                        <canvas id="gameCanvas" width="800" height="450"></canvas>
+                        
+                        <div id="ui-layer">
+                            <div class="bar-container"><div id="hp-bar"><div id="hp-fill"></div></div></div>
+                            <div id="ammo-display">MUNICIÓN: <span id="ammo-count">30</span>/30</div>
+                            <div id="score-display">PUNTOS: <span id="score-count">0</span></div>
                         </div>
                         
-                        <div class="text-slate-300 ml-4 leading-relaxed">
-                            <span class="text-yellow-500">{</span><br>
-                            &nbsp;&nbsp;<span class="text-purple-400">"role"</span>: <span class="text-green-400">"Integration Engineer"</span>,<br>
-                            &nbsp;&nbsp;<span class="text-purple-400">"education"</span>: <span class="text-green-400">"M.Sc. Artificial Intelligence"</span>,<br>
-                            &nbsp;&nbsp;<span class="text-purple-400">"focus"</span>: [<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"Cloud Security (AWS/K8s)"</span>,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"Computer Vision"</span>,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"System Architecture"</span><br>
-                            &nbsp;&nbsp;],<br>
-                            &nbsp;&nbsp;<span class="text-purple-400">"status"</span>: <span class="text-brand-primary">"Ready to Deploy"</span><br>
-                            <span class="text-yellow-500">}</span>
+                        <div id="reload-msg">¡PRESIONA 'R' PARA RECARGAR!</div>
+                        
+                        <div id="game-over-screen">
+                            <h1 class="text-red-500 mb-4 text-xl">MISION FALLIDA</h1>
+                            <p class="text-white text-xs mb-4">Puntaje: <span id="final-score">0</span></p>
+                            <button id="game-btn" onclick="resetGame()">REINICIAR SIMULACION</button>
+                        </div>
+                        
+                        <div id="controls-hint" class="hidden md:block">
+                            WASD: MOVER/SALTAR | CLICK/K: DISPARAR | R: RECARGAR
+                        </div>
+                        <div id="controls-hint" class="md:hidden block">
+                            TAP: DISPARAR | SWIPE: MOVER
                         </div>
                     </div>
+                    <!-- === SPARTAN GAME HTML STRUCTURE END === -->
                 </div>
-                <!-- Decoración sutil -->
-                <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-primary/10 rounded-full blur-[120px]"></div>
+                
+                <p class="mt-4 text-xs font-mono text-brand-muted text-center flex items-center gap-2">
+                    <span class="animate-pulse text-green-500">●</span> Ayuda al Master Chef a defenderse del Covenant
+                </p>
+
+                <!-- Decoración de fondo -->
+                <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/10 rounded-full blur-[100px]"></div>
             </div>
         </div>
     </section>
 
-    <!-- Tech Stack: Limpio y Minimalista -->
+    <!-- Tech Stack -->
     <section class="py-12 border-y border-white/5 bg-slate-900/50">
         <div class="max-w-7xl mx-auto px-4">
             <p class="text-center text-xs font-semibold text-brand-muted uppercase tracking-widest mb-8">Core Technologies</p>
@@ -327,7 +426,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-white/5 text-center">
+    <footer class="py-12 border-t border-white/5 text-center bg-slate-900">
         <div class="flex justify-center space-x-6 mb-8">
             <a href="https://github.com/novenix" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="github" class="w-6 h-6"></i></a>
             <a href="https://www.linkedin.com/in/nicolastorrespaez/" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
@@ -335,22 +434,17 @@
         <p class="text-sm text-brand-muted">© 2025 Nicolas Torres Páez</p>
     </footer>
 
-    <!-- MODAL (Misma lógica, estilo refinado) -->
+    <!-- MODAL -->
     <div id="project-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onclick="closeModal()"></div>
         <div class="modal-content w-full max-w-4xl bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden relative flex flex-col md:flex-row max-h-[90vh]">
-            
             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10 p-2 bg-slate-800/50 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-
-            <!-- Sidebar -->
             <div class="w-full md:w-1/3 bg-slate-800/30 p-8 border-r border-white/5">
                 <div id="modal-icon" class="mb-6"></div>
                 <h3 id="modal-title" class="text-2xl font-bold text-white mb-4"></h3>
                 <div id="modal-tags" class="flex flex-wrap gap-2 mb-8"></div>
                 <div class="space-y-3" id="modal-links"></div>
             </div>
-
-            <!-- Content -->
             <div class="w-full md:w-2/3 p-8 overflow-y-auto">
                 <h4 class="text-sm font-bold text-brand-muted uppercase tracking-wider mb-4">Resumen del Proyecto</h4>
                 <p id="modal-description" class="text-slate-300 leading-relaxed mb-8"></p>
@@ -359,10 +453,11 @@
         </div>
     </div>
 
+    <!-- MAIN SCRIPTS -->
     <script>
         lucide.createIcons();
         
-        // Data Objects (Misma data, solo lógica de UI)
+        // --- MODAL LOGIC ---
         const projects = {
             'brain-tumor': {
                 title: "Brain Tumor Classification",
@@ -370,7 +465,7 @@
                 colorClass: "text-brand-primary",
                 bgClass: "bg-brand-primary/10",
                 tags: ["Python", "TensorFlow", "EfficientNetB0"],
-                description: `Desarrollo de pipeline de diagnóstico médico asistido. Se implementó <strong>EfficientNetB0</strong> con Transfer Learning para clasificar tumores en datasets MRI desbalanceados, logrando un 70.3% de precisión (superando el baseline en un 7%).`,
+                description: `Desarrollo de pipeline de diagnóstico médico asistido. Se implementó <strong>EfficientNetB0</strong> con Transfer Learning para clasificar tumores en datasets MRI desbalanceados, logrando un 70.3% de precisión.`,
                 links: [
                     { name: "Ver Paper IEEE", url: "InformeFase3 (2).pdf", icon: "file-text" },
                     { name: "Ver Notebook", url: "Fase3_EfficientNetB0.ipynb", icon: "code-2" }
@@ -411,29 +506,12 @@
         function openModal(id) {
             const p = projects[id];
             if(!p) return;
-            
             document.getElementById('modal-title').textContent = p.title;
             document.getElementById('modal-description').innerHTML = p.description;
             document.getElementById('modal-icon').innerHTML = `<div class="inline-flex p-3 rounded-xl ${p.bgClass} ${p.colorClass}"><i data-lucide="${p.icon}" class="w-8 h-8"></i></div>`;
-            
-            document.getElementById('modal-tags').innerHTML = p.tags.map(t => 
-                `<span class="px-2 py-1 text-xs font-medium rounded-md bg-white/5 text-slate-300 border border-white/10">${t}</span>`
-            ).join('');
-
-            document.getElementById('modal-links').innerHTML = p.links.map(l => 
-                `<a href="${l.url}" target="_blank" class="flex items-center px-4 py-3 bg-slate-900/50 rounded-lg hover:bg-white/5 transition-colors border border-white/5 hover:border-white/20 group">
-                    <i data-lucide="${l.icon}" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-white"></i>
-                    <span class="text-sm font-medium text-slate-300 group-hover:text-white">${l.name}</span>
-                </a>`
-            ).join('');
-
-            document.getElementById('modal-metrics').innerHTML = p.metrics.map(m => 
-                `<div class="p-3 bg-slate-800/50 rounded-lg border border-white/5">
-                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">${m.label}</div>
-                    <div class="font-bold text-white">${m.value}</div>
-                </div>`
-            ).join('');
-
+            document.getElementById('modal-tags').innerHTML = p.tags.map(t => `<span class="px-2 py-1 text-xs font-medium rounded-md bg-white/5 text-slate-300 border border-white/10">${t}</span>`).join('');
+            document.getElementById('modal-links').innerHTML = p.links.map(l => `<a href="${l.url}" target="_blank" class="flex items-center px-4 py-3 bg-slate-900/50 rounded-lg hover:bg-white/5 transition-colors border border-white/5 hover:border-white/20 group"><i data-lucide="${l.icon}" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-white"></i><span class="text-sm font-medium text-slate-300 group-hover:text-white">${l.name}</span></a>`).join('');
+            document.getElementById('modal-metrics').innerHTML = p.metrics.map(m => `<div class="p-3 bg-slate-800/50 rounded-lg border border-white/5"><div class="text-xs text-slate-500 uppercase tracking-wider mb-1">${m.label}</div><div class="font-bold text-white">${m.value}</div></div>`).join('');
             lucide.createIcons();
             document.getElementById('project-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -443,8 +521,411 @@
             document.getElementById('project-modal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        
         document.addEventListener('keydown', (e) => { if(e.key === "Escape") closeModal(); });
+
+        // === SPARTAN GAME ENGINE START ===
+        
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // UI Elements
+        const hpFill = document.getElementById('hp-fill');
+        const ammoCountSpan = document.getElementById('ammo-count');
+        const scoreSpan = document.getElementById('score-count');
+        const reloadMsg = document.getElementById('reload-msg');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScoreSpan = document.getElementById('final-score');
+
+        // Config
+        const GRAVITY = 0.5; const FRICTION = 0.8; const FLOOR_Y = 400;
+        let gameRunning = true; let score = 0; let frame = 0;
+        const keys = { right: false, left: false, up: false, down: false, shoot: false, reload: false };
+
+        // --- CLASSES ---
+        class Camera { constructor() { this.x = 0; } }
+        const camera = new Camera();
+
+        class Particle {
+            constructor(x, y, color, speed, sizeBase) {
+                this.x = x; this.y = y; this.color = color;
+                this.size = Math.random() * sizeBase + 2;
+                this.vx = (Math.random() - 0.5) * speed; this.vy = (Math.random() - 0.5) * speed;
+                this.life = 30 + Math.random() * 20;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy; this.vy += 0.1;
+                this.life--; this.size *= 0.95;
+            }
+            draw() { ctx.fillStyle = this.color; ctx.fillRect(this.x - camera.x, this.y, this.size, this.size); }
+        }
+
+        class Bullet {
+            constructor(x, y, dir, isPlayer) {
+                this.x = x; this.y = y; this.dir = dir; this.isPlayer = isPlayer;
+                this.w = isPlayer ? 10 : 8; this.h = isPlayer ? 4 : 6;
+                this.speed = isPlayer ? 12 : 8; this.markedForDeletion = false;
+                this.color = isPlayer ? '#f39c12' : '#e74c3c'; 
+            }
+            update() {
+                this.x += this.speed * this.dir;
+                if (this.x > camera.x + 900 || this.x < camera.x - 100) this.markedForDeletion = true;
+            }
+            draw() {
+                ctx.fillStyle = this.color; let drawX = this.x - camera.x;
+                if (this.isPlayer) {
+                    ctx.fillRect(drawX, this.y, this.w, this.h);
+                    ctx.fillStyle = '#fff'; ctx.fillRect(drawX + (this.dir > 0 ? this.w-2 : 0), this.y, 2, this.h);
+                } else {
+                    ctx.beginPath(); ctx.arc(drawX + 4, this.y + 3, 4, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(drawX + 4, this.y + 3, 2, 0, Math.PI*2); ctx.fill();
+                }
+            }
+        }
+
+        class Player {
+            constructor() {
+                this.w = 36; this.h = 54; this.x = 100; this.y = FLOOR_Y - this.h;
+                this.vx = 0; this.vy = 0; this.speed = 5; this.jumpPower = -13;
+                this.grounded = false; this.facing = 1; this.crouching = false;
+                this.maxHp = 100; this.hp = this.maxHp; this.maxAmmo = 30; this.ammo = this.maxAmmo;
+                this.reloading = false; this.shootCooldown = 0; this.invulnerable = 0;
+            }
+
+            update() {
+                if (keys.right) { this.vx = this.speed; this.facing = 1; }
+                else if (keys.left) { this.vx = -this.speed; this.facing = -1; }
+                else { this.vx *= FRICTION; }
+                
+                if (keys.down && this.grounded) {
+                    this.crouching = true; this.h = 38; this.y = Math.min(this.y + 16, FLOOR_Y - this.h);
+                } else if (!keys.down && this.crouching) {
+                    this.y -= 16; this.crouching = false; this.h = 54;
+                }
+
+                if (keys.up && this.grounded && !this.crouching) {
+                    this.vy = this.jumpPower; this.grounded = false;
+                    for(let i=0; i<5; i++) particles.push(new Particle(this.x+this.w/2, this.y+this.h, '#7f8c8d', 3, 4));
+                }
+
+                if (keys.shoot && this.shootCooldown <= 0 && this.ammo > 0 && !this.reloading) {
+                    bullets.push(new Bullet(this.x + (this.facing===1?this.w:0), this.y + (this.crouching?14:20), this.facing, true));
+                    this.ammo--; this.shootCooldown = 9; updateUI();
+                    particles.push(new Particle(this.x + (this.facing===1?this.w:0), this.y + (this.crouching?14:20), '#f1c40f', 2, 6));
+                }
+
+                if (keys.reload && this.ammo < this.maxAmmo && !this.reloading) this.startReload();
+                reloadMsg.style.display = (this.ammo === 0 && !this.reloading) ? 'block' : 'none';
+
+                this.shootCooldown--; if(this.invulnerable > 0) this.invulnerable--;
+                this.vy += GRAVITY; this.x += this.vx; this.y += this.vy;
+
+                this.grounded = false;
+                if (this.y + this.h > FLOOR_Y) { this.y = FLOOR_Y - this.h; this.vy = 0; this.grounded = true; }
+                platforms.forEach(p => {
+                    if (this.x < p.x + p.w - 5 && this.x + this.w > p.x + 5 &&
+                        this.y + this.h >= p.y && this.y + this.h <= p.y + p.h && this.vy >= 0) {
+                            this.y = p.y - this.h; this.vy = 0; this.grounded = true;
+                    }
+                });
+                if (this.x < 0) this.x = 0;
+            }
+
+            startReload() {
+                this.reloading = true; ammoCountSpan.innerText = "---";
+                 let reloadInterval = setInterval(() => {
+                     if(!this.reloading) clearInterval(reloadInterval);
+                     particles.push(new Particle(this.x + this.w/2, this.y, '#fff', 2, 3));
+                 }, 200);
+                setTimeout(() => { this.ammo = this.maxAmmo; this.reloading = false; updateUI(); }, 1200);
+            }
+
+            takeDamage(amount) {
+                if (this.invulnerable > 0) return;
+                this.hp -= amount; this.invulnerable = 40; updateUI();
+                for(let i=0; i<10; i++) particles.push(new Particle(this.x + this.w/2, this.y + this.h/2, '#3498db', 8, 5));
+                if (this.hp <= 0) gameOver();
+            }
+
+            draw() {
+                if (this.invulnerable > 0 && frame % 4 < 2) return;
+                let drawX = this.x - camera.x;
+                ctx.save();
+                if (this.facing === -1) { ctx.translate(drawX + this.w, this.y); ctx.scale(-1, 1); drawX = 0; } else { ctx.translate(drawX, this.y); }
+
+                // --- SPARTAN DRAWING ---
+                const g_darkest = '#142814'; const g_dark = '#244024'; const g_mid = '#3a5e3a';
+                const g_light = '#577a57'; const g_highlight = '#7ba37b';
+                const metal = '#4a4a4a'; const black = '#111';
+                const visor_d = '#b06900'; const visor_l = '#e6a400';
+
+                // Base
+                ctx.fillStyle = black;
+                if(this.crouching) ctx.fillRect(6, 16, 24, 20); else ctx.fillRect(6, 14, 24, 38);
+
+                // Legs
+                if(!this.crouching) {
+                    ctx.fillStyle = g_dark; ctx.fillRect(6, 36, 11, 12); ctx.fillRect(19, 36, 11, 12);
+                    ctx.fillStyle = g_mid; ctx.fillRect(7, 37, 8, 10); ctx.fillRect(20, 37, 8, 10);
+                    ctx.fillStyle = metal; ctx.fillRect(7, 47, 9, 4); ctx.fillRect(20, 47, 9, 4);
+                    ctx.fillStyle = g_dark; ctx.fillRect(6, 51, 10, 3); ctx.fillRect(20, 51, 10, 3);
+                    ctx.fillStyle = g_mid; ctx.fillRect(7, 51, 8, 3); ctx.fillRect(21, 51, 8, 3);
+                }
+
+                // Torso
+                let torsoY = this.crouching ? 16 : 14;
+                ctx.fillStyle = g_dark; ctx.fillRect(4, torsoY, 28, this.crouching ? 16: 20);
+                ctx.fillStyle = g_mid; ctx.fillRect(5, torsoY+2, 26, 10);
+                ctx.fillStyle = g_light; ctx.fillRect(7, torsoY+4, 10, 6); ctx.fillRect(19, torsoY+4, 10, 6);
+                ctx.fillStyle = g_highlight; ctx.fillRect(7, torsoY+4, 3, 3); ctx.fillRect(19, torsoY+4, 3, 3);
+                if(!this.crouching) { ctx.fillStyle = g_mid; ctx.fillRect(8, torsoY+14, 20, 6); }
+
+                // Head
+                let headY = this.crouching ? 2 : 0;
+                ctx.fillStyle = g_dark; ctx.fillRect(10, headY, 16, 14);
+                ctx.fillStyle = g_mid; ctx.fillRect(11, headY+1, 14, 10);
+                ctx.fillStyle = g_light; ctx.fillRect(12, headY+1, 12, 3); 
+                ctx.fillStyle = metal; ctx.fillRect(13, headY+11, 10, 3);
+                ctx.fillStyle = visor_d; ctx.fillRect(11, headY+4, 14, 6);
+                ctx.fillStyle = visor_l; ctx.fillRect(12, headY+5, 12, 4);
+                ctx.fillStyle = '#fff'; ctx.fillRect(13, headY+6, 6, 2);
+
+                // Arms
+                let armY = this.crouching ? 16 : 18;
+                let armX = this.crouching ? 18 : 22;
+                ctx.fillStyle = g_mid; ctx.fillRect(0, armY, 8, 8); ctx.fillRect(armX-2, armY, 8, 8);
+                ctx.fillStyle = g_highlight; ctx.fillRect(1, armY+1, 4, 4); ctx.fillRect(armX-1, armY+1, 4, 4);
+                ctx.fillStyle = g_dark; ctx.fillRect(1, armY+8, 6, 8); ctx.fillRect(armX, armY+8, 6, 8);
+
+                // Gun
+                let gunX = this.crouching ? 14 : 18; let gunY = this.crouching ? 18 : 24;
+                ctx.fillStyle = '#333'; ctx.fillRect(gunX, gunY, 28, 9);
+                ctx.fillStyle = '#555'; ctx.fillRect(gunX+4, gunY+1, 20, 4); 
+                ctx.fillStyle = '#222'; ctx.fillRect(gunX+16, gunY+6, 8, 4); 
+                ctx.fillStyle = '#777'; ctx.fillRect(gunX+28, gunY+3, 6, 3); 
+
+                ctx.restore();
+            }
+        }
+
+        class Enemy {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.w = 42; this.h = 60;
+                this.hp = 40; this.vx = Math.random() > 0.5 ? -1.5 : 1.5;
+                this.patrolStart = x - 150; this.patrolEnd = x + 150;
+                this.cooldown = 0; this.markedForDeletion = false;
+                this.type = Math.random() > 0.5 ? 'blue' : 'red';
+            }
+
+            update(player) {
+                let dist = Math.sqrt(Math.pow(player.x - this.x, 2) + Math.pow(player.y - this.y, 2));
+                let canSee = dist < 450 && Math.abs(player.y - this.y) < 80;
+
+                if (canSee) {
+                    if (player.x < this.x && this.vx > 0) this.vx *= -1;
+                    if (player.x > this.x && this.vx < 0) this.vx *= -1;
+                    if (this.cooldown <= 0) {
+                        let dir = player.x < this.x ? -1 : 1;
+                        bullets.push(new Bullet(this.x + (dir===1?this.w:0), this.y + 25, dir, false));
+                        this.cooldown = 90 + Math.random() * 60;
+                        particles.push(new Particle(this.x + (dir===1?this.w:0), this.y + 25, '#e74c3c', 2, 4));
+                    }
+                } else {
+                    this.x += this.vx;
+                    if (this.x < this.patrolStart || this.x > this.patrolEnd) this.vx *= -1;
+                }
+                this.cooldown--;
+            }
+
+            draw() {
+                let drawX = this.x - camera.x;
+                if (drawX < -50 || drawX > canvas.width + 50) return;
+                ctx.save();
+                let facing = this.vx > 0 ? 1 : -1;
+                if (facing === -1) { ctx.translate(drawX + this.w, this.y); ctx.scale(-1, 1); drawX = 0; } else { ctx.translate(drawX, this.y); }
+
+                // --- ELITE DRAWING ---
+                let c_base, c_mid, c_light, c_eye;
+                const metal_d = '#5a6364'; const metal_l = '#bdc3c7'; const black = '#111';
+
+                if (this.type === 'blue') {
+                    c_base = '#1a237e'; c_mid = '#283593'; c_light = '#3f51b5'; c_eye = '#8c9eff';
+                } else {
+                    c_base = '#922b21'; c_mid = '#c0392b'; c_light = '#e74c3c'; c_eye = '#f1c40f';
+                }
+
+                ctx.fillStyle = black; ctx.fillRect(8, 16, 26, 24); 
+
+                // Legs (Zig-Zag)
+                ctx.fillStyle = c_base; ctx.fillRect(6, 38, 14, 12);
+                ctx.fillStyle = c_mid; ctx.fillRect(8, 40, 10, 8);
+                ctx.fillStyle = metal_d; ctx.fillRect(4, 46, 8, 8);
+                ctx.fillStyle = c_base; ctx.fillRect(10, 50, 12, 10);
+                ctx.fillStyle = c_mid; ctx.fillRect(12, 52, 8, 6);
+                ctx.fillStyle = metal_d; ctx.fillRect(10, 58, 14, 4);
+
+                // Torso
+                ctx.fillStyle = metal_d; ctx.fillRect(4, 14, 20, 18);
+                ctx.fillStyle = metal_l; ctx.fillRect(6, 16, 14, 10); 
+                ctx.fillStyle = c_base; ctx.fillRect(24, 18, 12, 16);
+                ctx.fillStyle = c_mid; ctx.fillRect(26, 20, 8, 12);
+
+                // Head
+                ctx.fillStyle = black; ctx.fillRect(18, 6, 12, 10);
+                ctx.fillStyle = c_base; ctx.fillRect(20, 2, 20, 8);
+                ctx.fillStyle = c_mid; ctx.fillRect(22, 4, 16, 4);
+                ctx.fillStyle = metal_d; ctx.fillRect(24, 8, 18, 8);
+                ctx.fillStyle = metal_l; ctx.fillRect(26, 10, 14, 4);
+                ctx.fillStyle = c_eye; ctx.fillRect(34, 6, 4, 3);
+                ctx.fillStyle = '#fff'; ctx.fillRect(35, 7, 2, 1);
+
+                // Plasma Rifle
+                let gunX = 20; let gunY = 30;
+                ctx.fillStyle = '#311b92'; 
+                ctx.beginPath(); ctx.moveTo(gunX, gunY+10); ctx.quadraticCurveTo(gunX+10, gunY-5, gunX+30, gunY+5); 
+                ctx.lineTo(gunX+28, gunY+12); ctx.quadraticCurveTo(gunX+10, gunY+5, gunX+2, gunY+14); ctx.fill();
+                ctx.fillStyle = '#b39ddb'; ctx.fillRect(gunX+12, gunY+2, 10, 6);
+                ctx.fillStyle = '#fff'; ctx.fillRect(gunX+14, gunY+4, 6, 2);
+
+                ctx.restore();
+            }
+        }
+
+        class Platform {
+            constructor(x, y, w, h) { this.x = x; this.y = y; this.w = w; this.h = h; }
+            draw() {
+                let drawX = this.x - camera.x; if (drawX + this.w < 0 || drawX > canvas.width) return;
+                ctx.fillStyle = '#3e4a5b'; ctx.fillRect(drawX, this.y, this.w, this.h);
+                ctx.strokeStyle = '#7f8c8d'; ctx.lineWidth = 3; ctx.strokeRect(drawX+1, this.y+1, this.w-2, this.h-2);
+                 ctx.fillStyle = '#3498db'; for(let i=10; i<this.w; i+=40) ctx.fillRect(drawX + i, this.y + 8, 20, 4);
+            }
+        }
+
+        // --- GLOBAL INSTANCES ---
+        let player, bullets, particles, enemies, platforms;
+
+        function initLevel() {
+            player = new Player();
+            bullets = []; particles = []; enemies = []; platforms = [];
+            score = 0; camera.x = 0; gameRunning = true;
+            updateUI(); gameOverScreen.style.display = 'none';
+
+            // Platform Layout
+            platforms.push(new Platform(200, 320, 250, 25));
+            platforms.push(new Platform(550, 250, 200, 25));
+            platforms.push(new Platform(850, 180, 150, 25));
+            platforms.push(new Platform(1100, 280, 300, 25));
+            platforms.push(new Platform(1500, 350, 200, 25));
+
+            // Enemy Spawns
+            spawnEnemy(400, 320); spawnEnemy(700, FLOOR_Y); spawnEnemy(900, 180);
+            spawnEnemy(1200, 280); spawnEnemy(1600, 350); spawnEnemy(1800, FLOOR_Y);
+        }
+
+        function spawnEnemy(x, y) { enemies.push(new Enemy(x, y - 60)); }
+
+        // --- GAME LOOP ---
+        function update() {
+            if (!gameRunning) return;
+            player.update();
+            camera.x = player.x - 250; if (camera.x < 0) camera.x = 0;
+
+            bullets.forEach(b => {
+                b.update();
+                platforms.forEach(p => {
+                    if (b.x > p.x && b.x < p.x + p.w && b.y > p.y && b.y < p.y+p.h) {
+                        b.markedForDeletion = true;
+                        for(let i=0; i<4; i++) particles.push(new Particle(b.x, b.y, '#bdc3c7', 4, 3));
+                    }
+                });
+                 if (b.y > FLOOR_Y) {
+                      b.markedForDeletion = true;
+                      for(let i=0; i<3; i++) particles.push(new Particle(b.x, b.y, '#555', 4, 3));
+                 }
+
+                if (b.isPlayer) {
+                    enemies.forEach(e => {
+                        if (b.x>e.x && b.x<e.x+e.w && b.y>e.y && b.y<e.y+e.h) {
+                            b.markedForDeletion = true; e.hp -= 15;
+                            for(let i=0; i<6; i++) particles.push(new Particle(b.x, b.y, e.type === 'blue' ? '#5c6bc0' : '#e74c3c', 7, 5));
+                            if (e.hp <= 0) {
+                                e.markedForDeletion = true; score += (e.type === 'red' ? 150 : 100); updateUI();
+                                for(let i=0; i<25; i++) particles.push(new Particle(e.x+e.w/2, e.y+e.h/2, e.type === 'blue' ? '#283593' : '#c0392b', 10, 8));
+                            }
+                        }
+                    });
+                } else {
+                    if (b.x>player.x && b.x<player.x+player.w && b.y>player.y && b.y<player.y+player.h) {
+                        b.markedForDeletion = true; player.takeDamage(15);
+                    }
+                }
+            });
+
+            bullets = bullets.filter(b => !b.markedForDeletion);
+            enemies = enemies.filter(e => !e.markedForDeletion);
+            particles.forEach((p, i) => { p.update(); if(p.life<=0) particles.splice(i,1); });
+            
+            if (enemies.length < 3 && camera.x > 500) spawnEnemy(camera.x + 900 + Math.random()*200, FLOOR_Y);
+            enemies.forEach(e => e.update(player));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Dynamic Sky Gradient
+            let grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grd.addColorStop(0, "#1a0b2e"); grd.addColorStop(0.6, "#6a1b9a"); grd.addColorStop(1, "#e67e22");
+            ctx.fillStyle = grd; ctx.fillRect(0,0, canvas.width, canvas.height);
+
+             // Halo Ring Background
+             ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 20;
+             ctx.beginPath(); ctx.arc(canvas.width/2, -600, 800, 0, Math.PI); ctx.stroke();
+
+            platforms.forEach(p => p.draw());
+            
+            // Floor
+            ctx.fillStyle = '#2c3e50'; ctx.fillRect(0, FLOOR_Y, canvas.width, canvas.height - FLOOR_Y);
+            ctx.fillStyle = '#1a252f'; ctx.fillRect(0, FLOOR_Y, canvas.width, 10);
+
+            enemies.forEach(e => e.draw());
+            player.draw();
+            bullets.forEach(b => b.draw());
+            particles.forEach(p => p.draw());
+        }
+
+        function loop() { update(); draw(); frame++; requestAnimationFrame(loop); }
+        function updateUI() {
+            hpFill.style.width = (player.hp / player.maxHp * 100) + '%';
+            ammoCountSpan.innerText = player.ammo; scoreSpan.innerText = score;
+        }
+        function gameOver() {
+            gameRunning = false; gameOverScreen.style.display = 'flex'; finalScoreSpan.innerText = score;
+        }
+        function resetGame() { initLevel(); }
+
+        const handleKey = (e, state) => {
+            const code = e.code;
+            // Prevent scrolling with arrows/space only if game is focused or we decide to block it globally
+            if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(code)) {
+                e.preventDefault();
+            }
+            if (code === 'ArrowRight' || code === 'KeyD') keys.right = state;
+            if (code === 'ArrowLeft' || code === 'KeyA') keys.left = state;
+            if (code === 'ArrowUp' || code === 'KeyW' || code === 'Space') keys.up = state;
+            if (code === 'ArrowDown' || code === 'KeyS') keys.down = state;
+            if (code === 'KeyK' || code === 'KeyF') keys.shoot = state;
+            if (code === 'KeyR') keys.reload = state;
+        }
+        
+        window.addEventListener('keydown', e => handleKey(e, true));
+        window.addEventListener('keyup', e => handleKey(e, false));
+        canvas.addEventListener('mousedown', () => keys.shoot = true);
+        canvas.addEventListener('mouseup', () => keys.shoot = false);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); keys.shoot = true; });
+        canvas.addEventListener('touchend', (e) => { e.preventDefault(); keys.shoot = false; });
+
+        initLevel();
+        loop();
+        
+        // === SPARTAN GAME ENGINE END ===
     </script>
 </body>
 </html>

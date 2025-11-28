@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicolas Torres Páez | Integration Engineer & AI Researcher</title>
+    <meta name="description" content="Portafolio profesional de Nicolas Torres Páez. Ingeniería de Integración y Soluciones de Inteligencia Artificial.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes: Inter para todo (Más limpio/Corporativo) y JetBrains para código puntual -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#1e293b', // Fondo tarjetas
+                            900: '#0f172a', // Fondo principal (Navy Dark)
+                            950: '#020617', // Acentos oscuros
+                        },
+                        brand: {
+                            primary: '#38bdf8', // Sky Blue 400 (Más suave que el Cian Neón)
+                            secondary: '#818cf8', // Indigo 400
+                            text: '#f1f5f9',      // Slate 100
+                            muted: '#94a3b8'      // Slate 400
+                        }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+                        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base elegante */
+        body { 
+            background-color: #0f172a; 
+            color: #f1f5f9; 
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(129, 140, 248, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism: El estándar "Premium" que gusta a todos */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4); /* Más transparente */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil blanco */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        /* Tipografía limpia */
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scrollbar discreto */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Animaciones suaves */
+        .modal { opacity: 0; visibility: hidden; transition: all 0.2s ease-in-out; }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content { transform: scale(0.98); transition: all 0.2s ease-in-out; }
+        .modal.active .modal-content { transform: scale(1); }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-primary selection:text-slate-900">
+
+    <!-- Navbar: Minimalista -->
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
+        <div class="glass-panel border-b-0"> <!-- Sin borde inferior duro -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0 font-sans text-lg font-semibold tracking-tight">
+                        Nicolas Torres<span class="text-brand-primary">.dev</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-1">
+                            <a href="#about" class="px-4 py-2 text-sm font-medium text-brand-muted hover:text-white transition-colors rounded-md hover:bg-white/5">Perfil</a>
+                            <a href="#experience" class="px-4 py-2 text-sm font-medium text-brand-muted hover:text-white transition-colors rounded-md hover:bg-white/5">Trayectoria</a>
+                            <a href="#research" class="px-4 py-2 text-sm font-medium text-brand-muted hover:text-white transition-colors rounded-md hover:bg-white/5">Investigación</a>
+                            <a href="https://www.linkedin.com/in/nicolastorrespaez/" target="_blank" class="ml-4 px-4 py-2 rounded-full border border-white/10 text-sm font-medium hover:bg-white hover:text-slate-900 transition-all">
+                                Contactar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section: Limpio y Espacioso -->
+    <section id="about" class="relative min-h-screen flex items-center justify-center pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="space-y-8">
+                <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-primary/20 bg-brand-primary/10">
+                    <span class="flex h-2 w-2 relative mr-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
+                    </span>
+                    <span class="text-xs font-medium text-brand-primary tracking-wide">Open to Opportunities</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight text-white">
+                    Ingeniería de <br>
+                    <span class="text-gradient">Integración Crítica</span>
+                    & IA.
+                </h1>
+                
+                <p class="text-lg text-brand-muted max-w-lg leading-relaxed font-light">
+                    Transformo infraestructuras complejas en sistemas unificados. Especialista en migraciones Cloud Zero-Downtime y arquitecturas Deep Learning aplicadas a negocio.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                    <a href="#experience" class="inline-flex justify-center items-center px-6 py-3 bg-brand-primary text-slate-900 text-sm font-bold rounded-lg hover:bg-sky-300 transition-all shadow-lg shadow-brand-primary/20">
+                        Ver Experiencia
+                        <i data-lucide="arrow-down" class="w-4 h-4 ml-2"></i>
+                    </a>
+                    <a href="#research" class="inline-flex justify-center items-center px-6 py-3 border border-white/10 text-brand-text text-sm font-medium rounded-lg hover:bg-white/5 transition-all">
+                        <i data-lucide="flask-conical" class="w-4 h-4 mr-2 text-brand-secondary"></i>
+                        Investigación (M.Sc)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Terminal Visual: Estilo MacOS (Más amigable) -->
+            <div class="hidden lg:block relative group perspective">
+                <div class="glass-panel rounded-xl shadow-2xl overflow-hidden transform transition-transform duration-500 group-hover:rotate-1">
+                    <!-- Barra de título estilo ventana -->
+                    <div class="bg-slate-800/50 px-4 py-3 flex items-center justify-between border-b border-white/5">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <div class="text-xs font-medium text-slate-400">~/jupiterone/integrations</div>
+                        <div class="w-8"></div> <!-- Spacer -->
+                    </div>
+                    
+                    <div class="p-6 font-mono text-sm space-y-4 bg-slate-900/40">
+                        <div class="flex items-center text-slate-400">
+                            <span class="text-brand-primary mr-2">➜</span>
+                            <span>cat professional_profile.json</span>
+                        </div>
+                        
+                        <div class="text-slate-300 ml-4 leading-relaxed">
+                            <span class="text-yellow-500">{</span><br>
+                            &nbsp;&nbsp;<span class="text-purple-400">"role"</span>: <span class="text-green-400">"Integration Engineer"</span>,<br>
+                            &nbsp;&nbsp;<span class="text-purple-400">"education"</span>: <span class="text-green-400">"M.Sc. Artificial Intelligence"</span>,<br>
+                            &nbsp;&nbsp;<span class="text-purple-400">"focus"</span>: [<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"Cloud Security (AWS/K8s)"</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"Computer Vision"</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">"System Architecture"</span><br>
+                            &nbsp;&nbsp;],<br>
+                            &nbsp;&nbsp;<span class="text-purple-400">"status"</span>: <span class="text-brand-primary">"Ready to Deploy"</span><br>
+                            <span class="text-yellow-500">}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decoración sutil -->
+                <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-primary/10 rounded-full blur-[120px]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack: Limpio y Minimalista -->
+    <section class="py-12 border-y border-white/5 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-center text-xs font-semibold text-brand-muted uppercase tracking-widest mb-8">Core Technologies</p>
+            <div class="flex justify-center flex-wrap gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="flex items-center gap-2"><i data-lucide="cloud" class="w-5 h-5"></i><span class="font-medium">AWS</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="container" class="w-5 h-5"></i><span class="font-medium">Kubernetes</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="brain-circuit" class="w-5 h-5"></i><span class="font-medium">TensorFlow</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="code-2" class="w-5 h-5"></i><span class="font-medium">TypeScript</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="database" class="w-5 h-5"></i><span class="font-medium">PostgreSQL</span></div>
+                <div class="flex items-center gap-2"><i data-lucide="box" class="w-5 h-5"></i><span class="font-medium">Go</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-4">Experiencia Profesional</h2>
+                <div class="w-20 h-1 bg-brand-primary rounded-full mb-4"></div>
+                <p class="text-brand-muted">Ingeniería de alto impacto en entornos críticos y distribuidos.</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- JupiterOne -->
+                <div class="glass-panel p-8 rounded-xl transition-all hover:bg-slate-800/50 group">
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-primary transition-colors">Integration Engineer</h3>
+                            <p class="text-brand-muted text-sm mt-1">JupiterOne • 2025</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-medium border border-brand-primary/20">Cybersecurity</span>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-sm font-semibold text-white mb-2 flex items-center">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 mr-2 text-brand-primary"></i>
+                                Logros Clave
+                            </h4>
+                            <ul class="text-sm text-brand-muted space-y-2">
+                                <li>• Lideré migración <strong>Zero-Downtime</strong> (DynamoDB → RDS) para clientes Enterprise.</li>
+                                <li>• Implementé ingesta de recursos <strong>Kubernetes</strong> (RBAC, Nodes) para visibilidad Multi-Cloud.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-white/5">
+                            <h4 class="text-xs font-semibold text-brand-muted uppercase tracking-wider mb-2">Innovación</h4>
+                            <p class="text-sm text-slate-300">
+                                Diseño de arquitectura <strong>RAG + Agentes MCP</strong> para reducir tiempos de investigación de 9h a 90s.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Darwoft -->
+                <div class="glass-panel p-8 rounded-xl transition-all hover:bg-slate-800/50">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Senior Software Engineer</h3>
+                            <p class="text-brand-muted text-sm">Darwoft • 2025</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-brand-muted mb-4">Desarrollo de dashboards analíticos de alto rendimiento en <strong>NestJS</strong> para visualización de datos estratégicos.</p>
+                </div>
+
+                <!-- Mercado Libre -->
+                <div class="glass-panel p-8 rounded-xl transition-all hover:bg-slate-800/50">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Software Engineer (AI Delivery)</h3>
+                            <p class="text-brand-muted text-sm">Mercado Libre • 2022 - 2025</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-medium border border-yellow-500/20">High Traffic</span>
+                    </div>
+                    <p class="text-sm text-brand-muted">Ingeniería de fiabilidad para modelos de IA (GPT, Gemini) y sistemas de fallback.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section id="research" class="py-24 bg-slate-900/30 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 flex items-end justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold mb-4">Laboratorio de Investigación</h2>
+                    <div class="w-20 h-1 bg-brand-secondary rounded-full mb-4"></div>
+                    <p class="text-brand-muted">M.Sc. Artificial Intelligence - Pontificia Universidad Javeriana</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition-transform cursor-pointer group" onclick="openModal('brain-tumor')">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-brand-primary/10 rounded-lg text-brand-primary">
+                            <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs font-bold bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20">70.3% ACC</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brand-primary transition-colors">Brain Tumor Classification</h3>
+                    <p class="text-sm text-brand-muted mb-4">Pipeline de visión artificial para diagnóstico médico usando EfficientNetB0.</p>
+                    <div class="text-xs font-medium text-brand-primary flex items-center">Ver Detalles <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition-transform cursor-pointer group" onclick="openModal('hotel-nlp')">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary">
+                            <i data-lucide="message-square-text" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brand-secondary transition-colors">Sentiment Analysis</h3>
+                    <p class="text-sm text-brand-muted mb-4">NLP aplicado a reseñas utilizando Transformers (BETO) y RNNs.</p>
+                    <div class="text-xs font-medium text-brand-secondary flex items-center">Ver Detalles <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition-transform cursor-pointer group" onclick="openModal('football-cv')">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="p-3 bg-yellow-500/10 rounded-lg text-yellow-500">
+                            <i data-lucide="video" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">Sports Analytics AI</h3>
+                    <p class="text-sm text-brand-muted mb-4">Computer Vision en tiempo real con YOLOv8 para tracking de jugadores.</p>
+                    <div class="text-xs font-medium text-yellow-500 flex items-center">Ver Detalles <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 text-center">
+        <div class="flex justify-center space-x-6 mb-8">
+            <a href="https://github.com/novenix" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="github" class="w-6 h-6"></i></a>
+            <a href="https://www.linkedin.com/in/nicolastorrespaez/" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+        </div>
+        <p class="text-sm text-brand-muted">© 2025 Nicolas Torres Páez</p>
+    </footer>
+
+    <!-- MODAL (Misma lógica, estilo refinado) -->
+    <div id="project-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="modal-content w-full max-w-4xl bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden relative flex flex-col md:flex-row max-h-[90vh]">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10 p-2 bg-slate-800/50 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+
+            <!-- Sidebar -->
+            <div class="w-full md:w-1/3 bg-slate-800/30 p-8 border-r border-white/5">
+                <div id="modal-icon" class="mb-6"></div>
+                <h3 id="modal-title" class="text-2xl font-bold text-white mb-4"></h3>
+                <div id="modal-tags" class="flex flex-wrap gap-2 mb-8"></div>
+                <div class="space-y-3" id="modal-links"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="w-full md:w-2/3 p-8 overflow-y-auto">
+                <h4 class="text-sm font-bold text-brand-muted uppercase tracking-wider mb-4">Resumen del Proyecto</h4>
+                <p id="modal-description" class="text-slate-300 leading-relaxed mb-8"></p>
+                <div id="modal-metrics" class="grid grid-cols-2 gap-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Data Objects (Misma data, solo lógica de UI)
+        const projects = {
+            'brain-tumor': {
+                title: "Brain Tumor Classification",
+                icon: "brain-circuit",
+                colorClass: "text-brand-primary",
+                bgClass: "bg-brand-primary/10",
+                tags: ["Python", "TensorFlow", "EfficientNetB0"],
+                description: `Desarrollo de pipeline de diagnóstico médico asistido. Se implementó <strong>EfficientNetB0</strong> con Transfer Learning para clasificar tumores en datasets MRI desbalanceados, logrando un 70.3% de precisión (superando el baseline en un 7%).`,
+                links: [
+                    { name: "Ver Paper IEEE", url: "InformeFase3 (2).pdf", icon: "file-text" },
+                    { name: "Ver Notebook", url: "Fase3_EfficientNetB0.ipynb", icon: "code-2" }
+                ],
+                metrics: [
+                    { label: "Accuracy", value: "70.3%" },
+                    { label: "Model", value: "EfficientNetB0" }
+                ]
+            },
+            'hotel-nlp': {
+                title: "Sentiment Analysis NLP",
+                icon: "message-square-text",
+                colorClass: "text-brand-secondary",
+                bgClass: "bg-brand-secondary/10",
+                tags: ["NLP", "PyTorch", "BERT"],
+                description: `Análisis de sentimientos en reseñas de hoteles utilizando Transformers (BETO) y RNNs. Se abordó el desbalance de clases mediante técnicas de Data Augmentation sintético.`,
+                links: [{ name: "Ver Reporte", url: "Proyecto 2025-1 (1).pdf", icon: "file-text" }],
+                metrics: [
+                    { label: "Architecture", value: "Transformer (BETO)" },
+                    { label: "Task", value: "Classification" }
+                ]
+            },
+            'football-cv': {
+                title: "Football Analysis AI",
+                icon: "video",
+                colorClass: "text-yellow-500",
+                bgClass: "bg-yellow-500/10",
+                tags: ["YOLOv8", "OpenCV", "Real-time"],
+                description: `Sistema de visión artificial para tracking de jugadores y análisis táctico en tiempo real. Utiliza detección de objetos y clustering (K-Means) para identificación de equipos.`,
+                links: [{ name: "GitHub Repo", url: "https://github.com/novenix/football_analysis", icon: "github" }],
+                metrics: [
+                    { label: "Detection", value: "YOLOv8" },
+                    { label: "Performance", value: "Real-time" }
+                ]
+            }
+        };
+
+        function openModal(id) {
+            const p = projects[id];
+            if(!p) return;
+            
+            document.getElementById('modal-title').textContent = p.title;
+            document.getElementById('modal-description').innerHTML = p.description;
+            document.getElementById('modal-icon').innerHTML = `<div class="inline-flex p-3 rounded-xl ${p.bgClass} ${p.colorClass}"><i data-lucide="${p.icon}" class="w-8 h-8"></i></div>`;
+            
+            document.getElementById('modal-tags').innerHTML = p.tags.map(t => 
+                `<span class="px-2 py-1 text-xs font-medium rounded-md bg-white/5 text-slate-300 border border-white/10">${t}</span>`
+            ).join('');
+
+            document.getElementById('modal-links').innerHTML = p.links.map(l => 
+                `<a href="${l.url}" target="_blank" class="flex items-center px-4 py-3 bg-slate-900/50 rounded-lg hover:bg-white/5 transition-colors border border-white/5 hover:border-white/20 group">
+                    <i data-lucide="${l.icon}" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-white"></i>
+                    <span class="text-sm font-medium text-slate-300 group-hover:text-white">${l.name}</span>
+                </a>`
+            ).join('');
+
+            document.getElementById('modal-metrics').innerHTML = p.metrics.map(m => 
+                `<div class="p-3 bg-slate-800/50 rounded-lg border border-white/5">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">${m.label}</div>
+                    <div class="font-bold text-white">${m.value}</div>
+                </div>`
+            ).join('');
+
+            lucide.createIcons();
+            document.getElementById('project-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('project-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") closeModal(); });
+    </script>
+</body>
+</html>
